@@ -1,2 +1,3 @@
 numpy
 randomgen==1.19.3
+rsa3==3.0.0.post20201106
