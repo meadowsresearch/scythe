@@ -1,2 +1,2 @@
 # scythe
-Customer-facing export and analysis tools
+Scythe: the Meadows Export & Analysis toolkit
