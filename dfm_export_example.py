@@ -11,7 +11,7 @@ PARAMS (6): size, freq, oris, phase, x, y;
 """
 from os.path import join, expanduser
 import json
-import pandas
+import pandas, numpy
 from meadows.rng import RandomNumberGenerator
 
 data_dir = expanduser('~/Data/scythe/dfm')
@@ -45,6 +45,7 @@ for sid in stim_ids:
     stim_df['orientation'] = [oris[o] for o in stim_df.o]
     stim_dfs[name] = stim_df
 
+## add feat_idx column (list of feature indices)
 ## from json can get size, from annotations have to load features
 feat_idx = []
 for t, trial in df.iterrows():
@@ -56,5 +57,8 @@ for t, trial in df.iterrows():
     ))
 df['feat_idx'] = feat_idx
 
-## bool array
+## boolean array: trials x features
 max_feats = max([len(sdf.index) for sdf in stim_dfs.values()])
+trialFeatureMask = numpy.full([len(df.index), max_feats], False).astype(bool)
+for t, trial in df.iterrows():
+    trialFeatureMask[t, trial.feat_idx] = True
