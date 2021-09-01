@@ -5,7 +5,20 @@ if TYPE_CHECKING:
 
 
 def score_cfmt(annotations: DataFrame) -> Tuple[int, DataFrame]:
-    return (0, annotations)
+    """Determine total score and mark correct responses
+
+    Args:
+        annotations (DataFrame): Annotations
+
+    Returns:
+        Tuple[int, DataFrame]: First element is the total score,
+            second a copy of the dataframe with a new "correct" column
+    """
+    scored = annotations.copy()
+    def isCorrect(row):
+        return KEY[row.stim1_name] == int(row.label)
+    scored['correct'] = scored.apply(isCorrect, axis=1)
+    return (scored.correct.values.sum(), scored)
 
 
 KEY = dict(
