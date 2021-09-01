@@ -7,9 +7,10 @@ with open('requirements.txt') as reqfile:
 setup(
     name='meadows',
     version='0.0.1',
-    description='Scythe: the Meadows Export & Analysis toolkit',
+    description='Meadows Scythe: the Meadows Export & Analysis toolkit',
     url='https://github.com/meadowsresearch/scythe',
-    long_description='',
+    long_description='Library for meadows users to preprocess downloaded data',
+    long_description_content_type='text/plain',
     classifiers=[
       "Programming Language :: Python",
       "Topic :: Internet :: WWW/HTTP",
