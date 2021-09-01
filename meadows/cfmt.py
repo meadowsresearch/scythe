@@ -1,12 +1,17 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Tuple
+if TYPE_CHECKING:
+    from pandas.core.frame import DataFrame
 
 
-def score_cfmt(annotations):
-    pass
+def score_cfmt(annotations: DataFrame) -> Tuple[int, DataFrame]:
+    return (0, annotations)
+
 
 KEY = dict(
     pract_00_X_01_13_l_li=1,
-    pract_00_X_03_13_r_li=2,
     pract_00_X_02_00_f_li=2,
+    pract_00_X_03_13_r_li=2,
     intro_00_B_01_13_l_li=2,
     intro_00_B_02_00_f_li=3,
     intro_00_B_03_13_r_li=3,
