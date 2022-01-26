@@ -15,6 +15,7 @@ def score_cfmt(annotations: DataFrame) -> Tuple[int, DataFrame]:
             second a copy of the dataframe with a new "correct" column
     """
     scored = annotations.copy()
+    scored = scored.loc[~scored.stim1_name.str.contains('pract')]
     def isCorrect(row):
         return KEY[row.stim1_name] == int(row.label)
     scored['correct'] = scored.apply(isCorrect, axis=1)

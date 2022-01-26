@@ -36,8 +36,8 @@ class CfmtScoreTests(TestCase):
             ['noise_23_D_11_23_r_li', 2]  # wrong
         ], columns=['stim1_name', 'label'])
         out_score, out_df = score_cfmt(annotations)
-        self.assertEqual(out_score, 12)
+        self.assertEqual(out_score, 10)
         assert_array_equal(out_df.correct.values, numpy.array([
-            True, True, False, True, False, True, True, True, True,
+            True, False, True, True, True, True,
             False, False, True, True, True, True, False, True, False
         ]))
