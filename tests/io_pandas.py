@@ -1,7 +1,6 @@
 from unittest import TestCase
 import pkg_resources
 from random import randint
-from numpy.testing import assert_array_equal, assert_array_almost_equal
 
 
 class IoPandasTests(TestCase):
