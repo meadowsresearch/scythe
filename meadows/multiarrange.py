@@ -28,7 +28,7 @@ def calc_trial_rep(ds: Dataset) -> float:
     # (to simulate subject behavior in the test trial) 
     # and rank-correlate the 2D MDS distances with 
     # the test-trial arrangement distances.
-    MDS_embedding = MDS(
+    mds = MDS(
         n_components=2,
         random_state=numpy.random.RandomState(seed=1),
         dissimilarity='precomputed'
@@ -49,8 +49,8 @@ def calc_trial_rep(ds: Dataset) -> float:
         training_rdms_scaled = rescale(training_rdms, method='evidence')
         training_rdm = training_rdms_scaled.mean(weights='rescalingWeights')
         training_subset = training_rdm.subset_pattern('stim_fname', test_items)
-        predicted = MDS_embedding.fit_transform(training_subset.dissimilarities)
+        predicted = mds.fit_transform(training_subset.get_matrices()[0, :, :])
         predicted_rdm = calc_rdm_euclid(Dataset(predicted))
-        trial_wise_prediction[t] = spearmanr(
+        trial_wise_prediction[t], p = spearmanr(
             predicted_rdm.dissimilarities, test_rdm.dissimilarities)
     return trial_wise_prediction.mean()
