@@ -2,6 +2,11 @@
 """
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import numpy
+from scipy.stats import spearmanr
+from sklearn.manifold import MDS
+from rsatoolbox.rdm.calc import calc_rdm_euclid
+from rsatoolbox.rdm.combine import from_partials, rescale
 if TYPE_CHECKING:
     from rsatoolbox.data import Dataset
 
@@ -15,4 +20,32 @@ def calc_trial_rep(ds: Dataset) -> float:
     Returns:
         float: replicability index
     """
-    return 0.0
+    ## a simple replicability index would be the accuracy 
+    # (measured as rank correlation) with which we can predict the distances 
+    # in each trial from all other trials. 
+    # we would infer the RDM from all training trials, 
+    # perform 2D MDS on the subset of that RDM describing the test trial items 
+    # (to simulate subject behavior in the test trial) 
+    # and rank-correlate the 2D MDS distances with 
+    # the test-trial arrangement distances.
+    MDS_embedding = MDS(
+        n_components=2,
+        random_state=numpy.random.RandomState(seed=1),
+        dissimilarity='precomputed'
+    )
+    rdm_list = [calc_rdm_euclid(ds) for ds in ds.split_obs('trial')]
+    n_trials = len(rdm_list)
+    trial_wise_prediction = numpy.full(n_trials, numpy.nan)
+    for t in range(n_trials):
+        test_rdm = rdm_list[t]
+        test_items = test_rdm.pattern_descriptors['stim_fname']
+        training_rdm_list = [rdm for r, rdm in enumerate(rdm_list) if r != t]
+        training_rdms = from_partials(training_rdm_list)
+        training_rdms_scaled = rescale(training_rdms, method='evidence')
+        training_rdm = training_rdms_scaled.mean(weights='rescalingWeights')
+        training_subset = training_rdm.subset_pattern('stim_fname', test_items)
+        predicted = MDS_embedding.fit_transform(training_subset.dissimilarities)
+        predicted_rdm = calc_rdm_euclid(Dataset(predicted))
+        trial_wise_prediction[t] = spearmanr(
+            predicted_rdm.dissimilarities, test_rdm.dissimilarities)
+    return trial_wise_prediction.mean()
