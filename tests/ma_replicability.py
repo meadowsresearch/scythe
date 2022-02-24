@@ -10,12 +10,28 @@ class MaTrialReplicibalityTests(TestCase):
     """Tests for the trial replicability index
     """
 
-    def test_index(self):
+    def test_index_high(self):
         from meadows.multiarrange import calc_trial_rep
         ds = Dataset(
-            measurements=numpy.random.rand(3, 2),
+            measurements=numpy.array([
+                [-1,    0   ], # trial 1, courgette
+                [-0.9,  0.1 ], # trial 1, cucumber
+                [ 0.4,  0.4 ], # trial 1, banana
+                [ 0.7,  0.7 ], # trial 1, apple
+                [ 0.6,  0.75], # trial 1, orange
+                [ 0,   -1   ], # trial 2, banana
+                [ 0.2,  0.9 ], # trial 2, apple
+                [-0.2,  0.9 ], # trial 2, orange
+                [ 0,    -1  ], # trial 3, courgette
+                [-0.1,  0.8 ], # trial 3, cucumber
+                [ 0,    1   ], # trial 3, banana
+            ]),
             descriptors=dict(foo='bar'),
-            obs_descriptors=dict(participant=['a', 'b', 'c']),
-            channel_descriptors=dict(foc=['x', 'y'], bac=[1, 2])
+            obs_descriptors=dict(
+                trial=[1,1,1,1,1,2,2,2,3,3,3],
+                stim_fname=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
+                    'co', 'cu', 'ba']
+            ),
+            channel_descriptors=dict(dimension=['x', 'y'])
         )
-        self.assertEqual(calc_trial_rep(ds), 0.5)
+        self.assertEqual(calc_trial_rep(ds), 0.9)
