@@ -34,4 +34,4 @@ class MaTrialReplicibalityTests(TestCase):
             ),
             channel_descriptors=dict(dimension=['x', 'y'])
         )
-        self.assertEqual(calc_trial_rep(ds), 0.9)
+        self.assertAlmostEqual(calc_trial_rep(ds), 0.683, places=3)
