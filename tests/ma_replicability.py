@@ -2,6 +2,7 @@
 """
 #pylint: disable=import-outside-toplevel, no-self-use
 from unittest import TestCase
+from numpy.random import RandomState
 import numpy
 from rsatoolbox.data import Dataset
 
@@ -35,3 +36,18 @@ class MaTrialReplicibalityTests(TestCase):
             channel_descriptors=dict(dimension=['x', 'y'])
         )
         self.assertAlmostEqual(calc_trial_rep(ds), 0.683, places=3)
+
+    def test_index_random(self):
+        from meadows.multiarrange import calc_trial_rep
+        rng = RandomState(seed=1)
+        ds = Dataset(
+            measurements=(rng.rand(11, 2)*2)-1,
+            descriptors=dict(foo='bar'),
+            obs_descriptors=dict(
+                trial=[1,1,1,1,1,2,2,2,3,3,3],
+                stim_fname=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
+                    'co', 'cu', 'ba']
+            ),
+            channel_descriptors=dict(dimension=['x', 'y'])
+        )
+        self.assertAlmostEqual(calc_trial_rep(ds), 0.0)
