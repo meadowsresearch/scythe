@@ -12,6 +12,9 @@ if TYPE_CHECKING:
 
 
 def calc_trial_rep(ds: Dataset) -> float:
+    ## TODO: arg: include_partial_trials
+    ## can use smacoff with nans or 0s?
+    ## or median distance
     """Calculate MA Trial Replicability Index
 
     Args:
