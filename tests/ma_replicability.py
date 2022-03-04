@@ -2,12 +2,13 @@
 """
 #pylint: disable=import-outside-toplevel, no-self-use
 from unittest import TestCase
+import pkg_resources
 from numpy.random import RandomState
 import numpy
 from rsatoolbox.data import Dataset
 
 
-class MaTrialReplicibalityTests(TestCase):
+class MaTrialReplicabilityTests(TestCase):
     """Tests for the trial replicability index
     """
 
@@ -50,4 +51,14 @@ class MaTrialReplicibalityTests(TestCase):
             ),
             channel_descriptors=dict(dimension=['x', 'y'])
         )
+        self.assertAlmostEqual(calc_trial_rep(ds), 0.0)
+
+    def test_load_datasets_from_json_file_1p_1t(self):
+        """Test on sample data
+        """
+        from meadows.multiarrange import calc_trial_rep
+        from meadows.io.rsatoolbox import load_dataset
+        fname = 'Meadows_myExp_v_v1_cuddly-bunny_3_tree.json'
+        fpath = pkg_resources.resource_filename('tests', 'data/' + fname)
+        ds = load_dataset(fpath)
         self.assertAlmostEqual(calc_trial_rep(ds), 0.0)
