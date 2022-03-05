@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 from os.path import join
-from matplotlib.pyplot import subplots, Circle #, imread
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from matplotlib.pyplot import subplots
+from matplotlib.patches import Circle
 from matplotlib.image import imread
 if TYPE_CHECKING:
     from rsatoolbox.data.dataset import Dataset
@@ -11,9 +11,8 @@ if TYPE_CHECKING:
 
 def arrangement(ds: Dataset, media_path: str='', ax: Optional[Axes]=None):
     ## size: meadows is Height of the stimuli in % of the width of the field.
-    ## arena =
 
-    item_size = 10 # should be param
+    item_size = 5 # should be param
     half_heigth = 1/(1 - (1.25 * 0.04 * item_size)) # half axis height in data pts
     item_extent = half_heigth * 0.04 * item_size    # item height in data pts
     
@@ -38,6 +37,7 @@ def arrangement(ds: Dataset, media_path: str='', ax: Optional[Axes]=None):
         fpath = join(media_path, fnames[i]+'.png')
         img = imread(fpath)
         x, y = coords[i, :]
+        y = -y ## flip given meadows coords vs mpl coords
         ax.imshow(img, zorder=3, extent=(
             x-(item_extent/2),
             x+(item_extent/2),
