@@ -5,7 +5,6 @@ from os import mkdir
 from tempfile import TemporaryDirectory
 from matplotlib.pyplot import close, subplots
 from matplotlib.patches import Circle
-#from matplotlib.image import imread
 from imageio import get_writer as get_iio_writer, imread
 if TYPE_CHECKING:
     from rsatoolbox.data.dataset import Dataset
@@ -13,13 +12,15 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure
 
 
-def arrangement(ds: Dataset, media_path: str='', ax: Optional[Axes]=None) -> Optional[Figure]:
+def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=None) -> Optional[Figure]:
     """Plot a single trial of a MultiArrangement task
 
     Args:
         ds (Dataset): rsatoolbox Dataset containing a single trial
-        media_path (str, optional): Path to directory containing your stimuli.
-            Defaults to ''.
+        media_path (str): Path to directory containing your stimuli.
+        item_size (int): The stimulus size as you configured it on Meadows.
+            This is the height of the stimulus in % of the width of the window,
+            (not the height of the window is 2x the width). Default is 5.
         ax (Optional[Axes], optional): Matplotlib axes to plot the trial on.
             Defaults to None.
 
@@ -29,9 +30,7 @@ def arrangement(ds: Dataset, media_path: str='', ax: Optional[Axes]=None) -> Opt
     Returns:
         Optional[Figure]: If no axes passed, will create a figure and return it.
     """
-    ## size: meadows is Height of the stimuli in % of the width of the field.
 
-    item_size = 5 # should be param
     half_heigth = 1/(1 - (1.25 * 0.04 * item_size)) # half axis height in data pts
     item_extent = half_heigth * 0.04 * item_size    # item height in data pts
     
