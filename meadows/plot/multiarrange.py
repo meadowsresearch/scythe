@@ -66,7 +66,7 @@ def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=No
     return fig
 
 
-def arrangements(ds: Dataset, fpath='.', media_path: str=''):
+def arrangements(ds: Dataset, fpath='.', media_path: str='', item_size=5):
     """Plot each trial in a MultiArrange Dataset
 
     Args:
@@ -77,12 +77,15 @@ def arrangements(ds: Dataset, fpath='.', media_path: str=''):
             Defaults to '.', saving pngs in the current directory.
         media_path (str, optional): Path to directory containing your stimuli.
             Defaults to ''.
+        item_size (int): The stimulus size as you configured it on Meadows.
+            This is the height of the stimulus in % of the width of the window,
+            (not the height of the window is 2x the width). Default is 5.
     """
     trial_ds_list = ds.split_obs('trial')
     with create_directory(fpath) as dir_path:
         with get_writer(fpath, mode='I', duration=1) as writer:
             for trial_ds in trial_ds_list:
-                fig = arrangement(trial_ds, media_path=media_path)
+                fig = arrangement(trial_ds, media_path=media_path, item_size=item_size)
                 assert fig is not None
                 trial_idx = trial_ds.obs_descriptors['trial']
                 fpath = join(dir_path, f'trial_{trial_idx[0]+1}.png')
