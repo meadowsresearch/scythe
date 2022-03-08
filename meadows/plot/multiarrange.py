@@ -14,6 +14,21 @@ if TYPE_CHECKING:
 
 
 def arrangement(ds: Dataset, media_path: str='', ax: Optional[Axes]=None) -> Optional[Figure]:
+    """Plot a single trial of a MultiArrangement task
+
+    Args:
+        ds (Dataset): rsatoolbox Dataset containing a single trial
+        media_path (str, optional): Path to directory containing your stimuli.
+            Defaults to ''.
+        ax (Optional[Axes], optional): Matplotlib axes to plot the trial on.
+            Defaults to None.
+
+    Raises:
+        ValueError: Will throw if Dataset contains multiple trials
+
+    Returns:
+        Optional[Figure]: If no axes passed, will create a figure and return it.
+    """
     ## size: meadows is Height of the stimuli in % of the width of the field.
 
     item_size = 5 # should be param
@@ -53,6 +68,17 @@ def arrangement(ds: Dataset, media_path: str='', ax: Optional[Axes]=None) -> Opt
 
 
 def arrangements(ds: Dataset, fpath='.', media_path: str=''):
+    """Plot each trial in a MultiArrange Dataset
+
+    Args:
+        ds (Dataset): rsatoolbox Dataset for a MultiArrangement task.
+            See meadows.io.rsatoolbox.load_dataset()
+        fpath (str, optional): Where to save the plots. The format, either a gif
+            or a directory with pngs, will be inferred from the extension.
+            Defaults to '.', saving pngs in the current directory.
+        media_path (str, optional): Path to directory containing your stimuli.
+            Defaults to ''.
+    """
     trial_ds_list = ds.split_obs('trial')
     with create_directory(fpath) as dir_path:
         with get_writer(fpath, mode='I', duration=1) as writer:
