@@ -32,7 +32,7 @@ ds = load_dataset(fpath)
 #     descriptors=dict(foo='bar'),
 #     obs_descriptors=dict(
 #         trial=[1,1,1,1,1,2,2,2,3,3,3],
-#         stim_fname=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
+#         stim_name=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
 #             'co', 'cu', 'ba']
 #     ),
 #     channel_descriptors=dict(dimension=['x', 'y'])
@@ -46,19 +46,19 @@ mds = MDS(
 rdm_list = []
 for ds in ds.split_obs('trial'):
     rdm = calc_rdm_euclid(ds)
-    rdm.pattern_descriptors['stim_fname'] = ds.obs_descriptors['stim_fname']
+    rdm.pattern_descriptors['stim_name'] = ds.obs_descriptors['stim_name']
     rdm_list.append(rdm)
 n_trials = len(rdm_list)
 trial_wise_prediction = numpy.full(n_trials, numpy.nan)
 for t in reversed(range(n_trials)):
     print(t)
     test_rdm = rdm_list[t]
-    test_items = test_rdm.pattern_descriptors['stim_fname'] ## TODO must be intersection instead
+    test_items = test_rdm.pattern_descriptors['stim_name'] ## TODO must be intersection instead
     training_rdm_list = [rdm for r, rdm in enumerate(rdm_list) if r != t]
-    training_rdms = from_partials(training_rdm_list, descriptor='stim_fname')
+    training_rdms = from_partials(training_rdm_list, descriptor='stim_name')
     training_rdms_scaled = rescale(training_rdms, method='evidence')
     training_rdm = training_rdms_scaled.mean(weights='rescalingWeights')
-    training_subset = training_rdm.subset_pattern('stim_fname', test_items)
+    training_subset = training_rdm.subset_pattern('stim_name', test_items)
     n_nans = numpy.sum(numpy.isnan(training_subset.dissimilarities))
     if n_nans > 0:
         warn(f'Training trials missing {n_nans} pairs, skipping fold.')

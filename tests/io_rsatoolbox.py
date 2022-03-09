@@ -22,6 +22,7 @@ class IoRsatoolboxTests(TestCase):
         self.assertEqual(ds.descriptors.get('task_index'), 1)
         self.assertEqual(ds.descriptors.get('task_name'), 'multiarrange1')
         self.assertEqual(ds.descriptors.get('experiment_name'), 'myExp')
+        self.assertEqual(ds.descriptors.get('version'), '2')
         self.assertEqual(ds.channel_descriptors.get('name'), ['x', 'y'])
         ## obs
         O = 99
@@ -29,5 +30,5 @@ class IoRsatoolboxTests(TestCase):
         #self.assertEqual(ds.obs_descriptors.get('trial_start')[O], 1509300051496)
         #self.assertEqual(ds.obs_descriptors.get('trial_end')[O], 1509300064445)
         self.assertEqual(ds.obs_descriptors.get('stim_id')[O], 'fc3317dadd5948d807175da02bc977c4')
-        self.assertEqual(ds.obs_descriptors.get('stim_fname')[O], 'mud_bubbling')
+        self.assertEqual(ds.obs_descriptors.get('stim_name')[O], 'mud_bubbling')
         assert_array_almost_equal(ds.measurements[O, :], array([ 0.18029752, -0.94403202]))

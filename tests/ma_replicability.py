@@ -31,7 +31,7 @@ class MaTrialReplicabilityTests(TestCase):
             descriptors=dict(foo='bar'),
             obs_descriptors=dict(
                 trial=[1,1,1,1,1,2,2,2,3,3,3],
-                stim_fname=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
+                stim_name=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
                     'co', 'cu', 'ba']
             ),
             channel_descriptors=dict(dimension=['x', 'y'])
@@ -46,7 +46,7 @@ class MaTrialReplicabilityTests(TestCase):
             descriptors=dict(foo='bar'),
             obs_descriptors=dict(
                 trial=[1,1,1,1,1,2,2,2,3,3,3],
-                stim_fname=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
+                stim_name=['co', 'cu', 'ba', 'ap', 'or', 'ba', 'ap', 'or', 
                     'co', 'cu', 'ba']
             ),
             channel_descriptors=dict(dimension=['x', 'y'])

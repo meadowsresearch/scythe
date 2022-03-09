@@ -51,7 +51,7 @@ def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=No
     ax.set_title(f'trial {trial_idx[0]+1}')
 
     coords = ds.get_measurements()
-    fnames = ds.obs_descriptors['stim_fname']
+    fnames = ds.obs_descriptors['stim_name']
     for i in range(ds.n_obs):
         fpath = join(media_path, fnames[i]+'.png')
         img = imread(fpath)

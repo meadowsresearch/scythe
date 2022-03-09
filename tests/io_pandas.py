@@ -29,6 +29,7 @@ class IoPandasTests(TestCase):
         self.assertEqual(df['task_index'][random_row(TASK_ROWS)], 1)
         self.assertEqual(df['task_name'][random_row(TASK_ROWS)], 'multiarrange1')
         self.assertEqual(df['experiment_name'][random_row(TASK_ROWS)], 'myExp')
+        self.assertEqual(df['version'][random_row(TASK_ROWS)], '2')
         ## trial-level descriptors
         TRIAL = 23
         TRIAL_ROWS = 4
@@ -40,7 +41,9 @@ class IoPandasTests(TestCase):
         self.assertEqual(trial_df['stim_id'][0], '6f3bcd859365621cb1fac620122aad98')
         self.assertEqual(trial_df['x'][0], 0.316031215513301)
         self.assertEqual(trial_df['y'][0], -0.690127377517038)
-        self.assertEqual(trial_df['stim_fname'][0], 'rain')
+        self.assertEqual(trial_df['stim_name'][0], 'rain')
+        self.assertEqual(trial_df['stim_type'][0], 'png')
+
 
     def test_df_from_dict(self):
         """Test creating a dataframe from a data dictionary directly.
@@ -49,9 +52,9 @@ class IoPandasTests(TestCase):
         data = dict()
         data['task'] = dict(name='arrangement')
         data['stimuli'] = [
-            dict(id='s1', name='stim1'),
-            dict(id='s2', name='stim2'),
-            dict(id='s3', name='stim3'),
+            dict(id='s1', name='stim1', type='png'),
+            dict(id='s2', name='stim2', type='wav'),
+            dict(id='s3', name='stim3', type='jpg'),
         ]
         data['trials'] = [
             dict(start=111, end=222, positions=[
@@ -64,7 +67,8 @@ class IoPandasTests(TestCase):
                 dict(id='s3', x=1.37, y=1.38)
             ]),
         ]
-        meta = dict(participant='cuddly-bunny', task_index=3, experiment_name='myExp')
+        meta = dict(participant='cuddly-bunny', task_index=3,
+            experiment_name='myExp', version='7')
         df = df_from_task_data(data, meta)
         N_PLACEMENTS_TOTAL = TASK_ROWS = 5
         self.assertEqual(len(df), N_PLACEMENTS_TOTAL)
@@ -72,6 +76,7 @@ class IoPandasTests(TestCase):
         self.assertEqual(df['task_index'][random_row(TASK_ROWS)], 3)
         self.assertEqual(df['task_name'][random_row(TASK_ROWS)], 'arrangement')
         self.assertEqual(df['experiment_name'][random_row(TASK_ROWS)], 'myExp')
+        self.assertEqual(df['version'][random_row(TASK_ROWS)], '7')
         ## trial-level descriptors
         TRIAL = 1
         TRIAL_ROWS = 2
@@ -83,4 +88,5 @@ class IoPandasTests(TestCase):
         self.assertEqual(trial_df['stim_id'][0], 's2')
         self.assertEqual(trial_df['x'][0], 1.27)
         self.assertEqual(trial_df['y'][0], 1.28)
-        self.assertEqual(trial_df['stim_fname'][0], 'stim2')
+        self.assertEqual(trial_df['stim_name'][0], 'stim2')
+        self.assertEqual(trial_df['stim_type'][0], 'wav')

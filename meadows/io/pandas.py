@@ -35,13 +35,15 @@ def df_from_task_data(data: dict, meta: Optional[Dict]=None) -> DataFrame:
     """
     if meta is None:
         meta = dict()
-    stimuli = dict([(s['id'], s['name']) for s in data['stimuli']])
+    stim_names = dict([(s['id'], s['name']) for s in data['stimuli']])
+    stim_types = dict([(s['id'], s['type']) for s in data['stimuli']])
     rows = []
     for t, trial in enumerate(data['trials']):
         for position in trial['positions']:
             rows.append(dict(
                 stim_id=position['id'],
-                stim_fname=stimuli[position['id']],
+                stim_name=stim_names[position['id']],
+                stim_type=stim_types[position['id']],
                 x=position['x'],
                 y=position['y'],
                 trial=t,
@@ -50,7 +52,7 @@ def df_from_task_data(data: dict, meta: Optional[Dict]=None) -> DataFrame:
             ))
     df = DataFrame(rows)
     df['task_name'] = data['task']['name']
-    for key in ['participant', 'task_index', 'experiment_name']:
+    for key in ['participant', 'task_index', 'experiment_name', 'version']:
         if key in meta:
             df[key] = meta[key]
     return df
