@@ -63,8 +63,23 @@ def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=No
             y-(item_extent/2),
             y+(item_extent/2),
         )) #(left, right, bottom, top)
+
+    ## add right-side metadata annotations
+    trial_start = ds.obs_descriptors['trial_start'][0]
+    trial_end = ds.obs_descriptors['trial_end'][0]
+    n_actions = ds.obs_descriptors['n_actions'][0]
+    dur_secs = (trial_end-trial_start)/1000
+    trial_meta = [
+        ('items', ds.n_obs, ''),
+        ('time/item', dur_secs/ds.n_obs, 's'),
+        ('actions/item', n_actions/ds.n_obs, ''),
+    ]
     text_kwargs = dict(horizontalalignment='right', verticalalignment='center')
-    text(half_heigth, half_heigth-0.1, 'test', **text_kwargs)
+    y_offset = 0.1
+    for label, val, suffix in trial_meta:
+        content = f'{label}: {round(val, 1)}{suffix} '
+        text(half_heigth, half_heigth-y_offset, content, **text_kwargs)
+        y_offset += 0.1
     return fig
 
 
