@@ -3,7 +3,7 @@ from meadows.plot.multiarrange import arrangement, arrangements
 from matplotlib.pyplot import show
 
 ## your meadows data file for just one MA task:
-fpath = 'tests/data/Meadows_myExp_v_v1_cuddly-bunny_3_tree.json'
+fpath = 'tests/data/Meadows_myExp_v_v2_profound-mammoth_1_tree.json'
 
 ## this reads the data and turns it into an rsatoolbox "Dataset" object:
 ds = load_dataset(fpath)

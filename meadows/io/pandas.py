@@ -35,22 +35,29 @@ def df_from_task_data(data: dict, meta: Optional[Dict]=None) -> DataFrame:
     """
     if meta is None:
         meta = dict()
-    stimuli = dict([(s['id'], s['name']) for s in data['stimuli']])
+    stim_names = dict([(s['id'], s['name']) for s in data['stimuli']])
+    stim_types = dict([(s['id'], s['type']) for s in data['stimuli']])
     rows = []
     for t, trial in enumerate(data['trials']):
+        actions = [e for e in trial['log'] if e[1] in ('placed', 'displaced')]
+        start_event = [e for e in trial['log'] if e[1] == 'logStarted'][0]
+        finish_event = [e for e in trial['log'] if e[1] == 'finish'][0]
         for position in trial['positions']:
             rows.append(dict(
                 stim_id=position['id'],
-                stim_fname=stimuli[position['id']],
+                stim_name=stim_names[position['id']],
+                stim_type=stim_types[position['id']],
                 x=position['x'],
                 y=position['y'],
                 trial=t,
-                #trial_start=trial['start'],
-                #trial_end=trial['end'],
+                n_actions=len(actions),
+                trial_start=start_event[0],
+                trial_end=finish_event[0],
             ))
+        
     df = DataFrame(rows)
     df['task_name'] = data['task']['name']
-    for key in ['participant', 'task_index', 'experiment_name']:
+    for key in ['participant', 'task_index', 'experiment_name', 'version']:
         if key in meta:
             df[key] = meta[key]
     return df
