@@ -35,14 +35,49 @@ class IoPandasTests(TestCase):
         TRIAL_ROWS = 4
         trial_df = df[df['trial'] == TRIAL].reset_index()
         self.assertEqual(len(trial_df), TRIAL_ROWS)
-        # self.assertEqual(trial_df['trial_start'][random_row(TRIAL_ROWS)], 1509300051496)
-        # self.assertEqual(trial_df['trial_end'][random_row(TRIAL_ROWS)], 1509300064445)
+        self.assertEqual(trial_df['trial_start'][random_row(TRIAL_ROWS)], 1646494867321)
+        self.assertEqual(trial_df['trial_end'][random_row(TRIAL_ROWS)], 1646494874807)
+        self.assertEqual(trial_df['n_actions'][random_row(TRIAL_ROWS)], 4)
         ## stimulus-level descriptors
         self.assertEqual(trial_df['stim_id'][0], '6f3bcd859365621cb1fac620122aad98')
         self.assertEqual(trial_df['x'][0], 0.316031215513301)
         self.assertEqual(trial_df['y'][0], -0.690127377517038)
         self.assertEqual(trial_df['stim_name'][0], 'rain')
         self.assertEqual(trial_df['stim_type'][0], 'png')
+
+        """
+In [10]: data["trials"][22]["log"]
+Out[10]: 
+[[1646494867321, 'logStarted', {}],
+ [1646494867321, 'screenSize', {'w': 1920, 'h': 1080}],
+ [1646494867322, 'viewportSize', {'w': 1591, 'h': 767.125}],
+ [1646494869375,
+  'placed',
+  {'id': 'c6db4ac2757c586b56b94a95afc07ac1',
+   'x': 0.03075369560143987,
+   'y': 0.9192426965030993,
+   'cat': ''}],
+ [1646494870846,
+  'placed',
+  {'id': 'fae68920015fd7887949cb1c0f4b3848',
+   'x': -0.028331781270074227,
+   'y': 0.8702646018052113,
+   'cat': ''}],
+ [1646494872710,
+  'placed',
+  {'id': '10fb3994fe5175b88ebdc3520ea8caf6',
+   'x': 0.2013358780568332,
+   'y': -0.8882375058509373,
+   'cat': ''}],
+ [1646494874174,
+  'placed',
+  {'id': 'fae68920015fd7887949cb1c0f4b3848',
+   'x': -0.0457098627028721,
+   'y': 0.797276659787459,
+   'cat': ''}],
+ [1646494874807, 'finish', {}]]
+
+        """
 
 
     def test_df_from_dict(self):
