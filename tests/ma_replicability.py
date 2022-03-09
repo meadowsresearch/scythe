@@ -61,4 +61,4 @@ class MaTrialReplicabilityTests(TestCase):
         fname = 'Meadows_myExp_v_v2_profound-mammoth_1_tree.json'
         fpath = pkg_resources.resource_filename('tests', 'data/' + fname)
         ds = load_dataset(fpath)
-        self.assertAlmostEqual(calc_trial_rep(ds), 0.0)
+        self.assertAlmostEqual(calc_trial_rep(ds), 0.086053833)

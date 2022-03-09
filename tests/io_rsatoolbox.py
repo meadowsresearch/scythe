@@ -19,15 +19,15 @@ class IoRsatoolboxTests(TestCase):
         fpath = pkg_resources.resource_filename('tests', 'data/' + fname)
         ds = load_dataset(fpath)
         self.assertEqual(ds.descriptors.get('participant'), 'profound-mammoth')
-        self.assertEqual(ds.descriptors.get('task_index'), 3)
-        self.assertEqual(ds.descriptors.get('task_name'), 'arrangement')
+        self.assertEqual(ds.descriptors.get('task_index'), 1)
+        self.assertEqual(ds.descriptors.get('task_name'), 'multiarrange1')
         self.assertEqual(ds.descriptors.get('experiment_name'), 'myExp')
         self.assertEqual(ds.channel_descriptors.get('name'), ['x', 'y'])
         ## obs
-        O = 731
+        O = 99
         self.assertEqual(ds.obs_descriptors.get('trial')[O], 23)
         #self.assertEqual(ds.obs_descriptors.get('trial_start')[O], 1509300051496)
         #self.assertEqual(ds.obs_descriptors.get('trial_end')[O], 1509300064445)
-        self.assertEqual(ds.obs_descriptors.get('stim_id')[O], '59f240584eae357c0f039786')
-        self.assertEqual(ds.obs_descriptors.get('stim_fname')[O], 'stim069.png')
-        assert_array_almost_equal(ds.measurements[O, :], array([1.304118, 0.845869]))
+        self.assertEqual(ds.obs_descriptors.get('stim_id')[O], 'fc3317dadd5948d807175da02bc977c4')
+        self.assertEqual(ds.obs_descriptors.get('stim_fname')[O], 'mud_bubbling')
+        assert_array_almost_equal(ds.measurements[O, :], array([ 0.18029752, -0.94403202]))
