@@ -52,8 +52,12 @@ def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=No
 
     coords = ds.get_measurements()
     fnames = ds.obs_descriptors['stim_name']
+    if 'stim_type' in ds.descriptors:
+        stim_types = [ds.descriptors['stim_type']]*len(fnames)
+    else:
+        stim_types = ds.obs_descriptors['stim_type']
     for i in range(ds.n_obs):
-        fpath = join(media_path, fnames[i]+'.png')
+        fpath = join(media_path, f'{fnames[i]}.{stim_types[i]}')
         img = imread(fpath)
         x, y = coords[i, :]
         y = -y ## flip given meadows coords vs mpl coords
