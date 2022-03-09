@@ -35,8 +35,8 @@ class IoPandasTests(TestCase):
         TRIAL_ROWS = 4
         trial_df = df[df['trial'] == TRIAL].reset_index()
         self.assertEqual(len(trial_df), TRIAL_ROWS)
-        self.assertEqual(trial_df['trial_start'][random_row(TRIAL_ROWS)], 1646494867321)
-        self.assertEqual(trial_df['trial_end'][random_row(TRIAL_ROWS)], 1646494874807)
+        self.assertEqual(trial_df['trial_start'][random_row(TRIAL_ROWS)], 1646494875092)
+        self.assertEqual(trial_df['trial_end'][random_row(TRIAL_ROWS)], 1646494884936)
         self.assertEqual(trial_df['n_actions'][random_row(TRIAL_ROWS)], 4)
         ## stimulus-level descriptors
         self.assertEqual(trial_df['stim_id'][0], '6f3bcd859365621cb1fac620122aad98')
@@ -44,41 +44,6 @@ class IoPandasTests(TestCase):
         self.assertEqual(trial_df['y'][0], -0.690127377517038)
         self.assertEqual(trial_df['stim_name'][0], 'rain')
         self.assertEqual(trial_df['stim_type'][0], 'png')
-
-        """
-In [10]: data["trials"][22]["log"]
-Out[10]: 
-[[1646494867321, 'logStarted', {}],
- [1646494867321, 'screenSize', {'w': 1920, 'h': 1080}],
- [1646494867322, 'viewportSize', {'w': 1591, 'h': 767.125}],
- [1646494869375,
-  'placed',
-  {'id': 'c6db4ac2757c586b56b94a95afc07ac1',
-   'x': 0.03075369560143987,
-   'y': 0.9192426965030993,
-   'cat': ''}],
- [1646494870846,
-  'placed',
-  {'id': 'fae68920015fd7887949cb1c0f4b3848',
-   'x': -0.028331781270074227,
-   'y': 0.8702646018052113,
-   'cat': ''}],
- [1646494872710,
-  'placed',
-  {'id': '10fb3994fe5175b88ebdc3520ea8caf6',
-   'x': 0.2013358780568332,
-   'y': -0.8882375058509373,
-   'cat': ''}],
- [1646494874174,
-  'placed',
-  {'id': 'fae68920015fd7887949cb1c0f4b3848',
-   'x': -0.0457098627028721,
-   'y': 0.797276659787459,
-   'cat': ''}],
- [1646494874807, 'finish', {}]]
-
-        """
-
 
     def test_df_from_dict(self):
         """Test creating a dataframe from a data dictionary directly.
@@ -96,10 +61,25 @@ Out[10]:
                 dict(id='s1', x=0.17, y=0.18),
                 dict(id='s2', x=0.27, y=0.28),
                 dict(id='s3', x=0.37, y=0.38)
+            ], log=[
+                [111, 'logStarted', {}],
+                [112, 'placed', {}],
+                [113, 'displaced', {}],
+                [114, 'placed', {}],
+                [115, 'placed', {}],
+                [116, 'finish', {}],
             ]),
             dict(start=333, end=444, positions=[
                 dict(id='s2', x=1.27, y=1.28),
                 dict(id='s3', x=1.37, y=1.38)
+            ], log=[
+                [111, 'logStarted', {}],
+                [112, 'placed', {}],
+                [113, 'displaced', {}],
+                [114, 'placed', {}],
+                [115, 'displaced', {}],
+                [116, 'placed', {}],
+                [117, 'finish', {}],
             ]),
         ]
         meta = dict(participant='cuddly-bunny', task_index=3,
@@ -117,8 +97,9 @@ Out[10]:
         TRIAL_ROWS = 2
         trial_df = df[df['trial'] == TRIAL].reset_index()
         self.assertEqual(len(trial_df), TRIAL_ROWS)
-        # self.assertEqual(trial_df['trial_start'][random_row(TRIAL_ROWS)], 333)
-        # self.assertEqual(trial_df['trial_end'][random_row(TRIAL_ROWS)], 444)
+        self.assertEqual(trial_df['trial_start'][random_row(TRIAL_ROWS)], 111)
+        self.assertEqual(trial_df['trial_end'][random_row(TRIAL_ROWS)], 117)
+        self.assertEqual(trial_df['n_actions'][random_row(TRIAL_ROWS)], 5)
         ## stimulus-level descriptors
         self.assertEqual(trial_df['stim_id'][0], 's2')
         self.assertEqual(trial_df['x'][0], 1.27)
