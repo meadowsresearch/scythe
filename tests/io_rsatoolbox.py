@@ -15,10 +15,10 @@ class IoRsatoolboxTests(TestCase):
         as found in file.
         """
         from meadows.io.rsatoolbox import load_dataset
-        fname = 'Meadows_myExp_v_v1_cuddly-bunny_3_tree.json'
+        fname = 'Meadows_myExp_v_v2_profound-mammoth_1_tree.json'
         fpath = pkg_resources.resource_filename('tests', 'data/' + fname)
         ds = load_dataset(fpath)
-        self.assertEqual(ds.descriptors.get('participant'), 'cuddly-bunny')
+        self.assertEqual(ds.descriptors.get('participant'), 'profound-mammoth')
         self.assertEqual(ds.descriptors.get('task_index'), 3)
         self.assertEqual(ds.descriptors.get('task_name'), 'arrangement')
         self.assertEqual(ds.descriptors.get('experiment_name'), 'myExp')

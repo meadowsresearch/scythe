@@ -18,15 +18,15 @@ class IoPandasTests(TestCase):
         as found in file.
         """
         from meadows.io.pandas import df_from_tree_file
-        fname = 'Meadows_myExp_v_v1_cuddly-bunny_3_tree.json'
+        fname = 'Meadows_myExp_v_v2_profound-mammoth_1_tree.json'
         fpath = pkg_resources.resource_filename('tests', 'data/' + fname)
         df = df_from_tree_file(fpath)
         self.assertEqual(df['trial'].unique().size, 109)
         N_PLACEMENTS_TOTAL = TASK_ROWS = 1758
         self.assertEqual(len(df), N_PLACEMENTS_TOTAL)
         ## file-level descriptors
-        self.assertEqual(df['participant'][random_row(TASK_ROWS)], 'cuddly-bunny')
-        self.assertEqual(df['task_index'][random_row(TASK_ROWS)], 3)
+        self.assertEqual(df['participant'][random_row(TASK_ROWS)], 'profound-mammoth')
+        self.assertEqual(df['task_index'][random_row(TASK_ROWS)], 1)
         self.assertEqual(df['task_name'][random_row(TASK_ROWS)], 'arrangement')
         self.assertEqual(df['experiment_name'][random_row(TASK_ROWS)], 'myExp')
         ## trial-level descriptors

@@ -58,7 +58,7 @@ class MaTrialReplicabilityTests(TestCase):
         """
         from meadows.multiarrange import calc_trial_rep
         from meadows.io.rsatoolbox import load_dataset
-        fname = 'Meadows_myExp_v_v1_cuddly-bunny_3_tree.json'
+        fname = 'Meadows_myExp_v_v2_profound-mammoth_1_tree.json'
         fpath = pkg_resources.resource_filename('tests', 'data/' + fname)
         ds = load_dataset(fpath)
         self.assertAlmostEqual(calc_trial_rep(ds), 0.0)
