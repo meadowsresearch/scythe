@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure
 
 
-def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=None) -> Optional[Figure]:
+def arrangement(ds: Dataset, media_path: str, item_size=5.0, ax: Optional[Axes]=None) -> Optional[Figure]:
     """Plot a single trial of a MultiArrangement task
 
     Args:
@@ -87,7 +87,7 @@ def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=No
     return fig
 
 
-def arrangements(ds: Dataset, fpath='.', media_path: str='', item_size=5):
+def arrangements(ds: Dataset, fpath='.', media_path: str='', item_size=5.0):
     """Plot each trial in a MultiArrange Dataset
 
     Args:
