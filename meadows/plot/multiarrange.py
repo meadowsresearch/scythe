@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Optional
 from os.path import join, splitext, isdir
 from os import mkdir
 from tempfile import TemporaryDirectory
-from matplotlib.pyplot import close, subplots
+from matplotlib.pyplot import close, subplots, text
 from matplotlib.patches import Circle
 from imageio import get_writer as get_iio_writer, imread
 if TYPE_CHECKING:
@@ -63,6 +63,8 @@ def arrangement(ds: Dataset, media_path: str, item_size=5, ax: Optional[Axes]=No
             y-(item_extent/2),
             y+(item_extent/2),
         )) #(left, right, bottom, top)
+    text_kwargs = dict(horizontalalignment='right', verticalalignment='center')
+    text(half_heigth, half_heigth-0.1, 'test', **text_kwargs)
     return fig
 
 
