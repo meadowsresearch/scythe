@@ -49,6 +49,8 @@ def calc_trial_rep(ds: Dataset) -> float:
             continue
         predicted = mds.fit_transform(training_subset.get_matrices()[0, :, :])
         predicted_rdm = calc_rdm_euclid(Dataset(predicted))
+        predicted_rdm.pattern_descriptors['stim_name'] = training_subset.pattern_descriptors['stim_name']
+        predicted_rdm.sort_by(stim_name=test_rdm.pattern_descriptors['stim_name'])
         trial_wise_prediction[t], _ = spearmanr(
             predicted_rdm.dissimilarities[0,:], test_rdm.dissimilarities[0,:])
     return numpy.nanmean(trial_wise_prediction)
