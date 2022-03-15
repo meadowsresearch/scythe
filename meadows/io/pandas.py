@@ -64,6 +64,14 @@ def df_from_task_data(data: dict, meta: Optional[Dict]=None) -> DataFrame:
     return df
 
 def df_checks_from_task_data(data: dict) -> DataFrame:
+    """Create a dataframe with attention checks from an MA task
+
+    Args:
+        data (dict): data for one task such as loaded from json
+
+    Returns:
+        DataFrame: Each row is one check
+    """
     rows = []
     for t, trial in enumerate(data['trials']):
         for annotation in trial['annotations']:

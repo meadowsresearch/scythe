@@ -1,14 +1,16 @@
 """Tools related to the Multiple Arrangements task
 """
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, Tuple
 from warnings import warn
 import numpy
+from pandas import DataFrame
 from scipy.stats import spearmanr
 from sklearn.manifold import MDS
 from rsatoolbox.rdm.calc import calc_rdm_euclid
 from rsatoolbox.rdm.combine import from_partials, rescale
 from rsatoolbox.data import Dataset
+from meadows.io.pandas import df_checks_from_task_data, df_from_task_data
 
 
 def calc_trial_rep(ds: Dataset) -> float:
@@ -54,3 +56,28 @@ def calc_trial_rep(ds: Dataset) -> float:
         trial_wise_prediction[t], _ = spearmanr(
             predicted_rdm.dissimilarities[0,:], test_rdm.dissimilarities[0,:])
     return numpy.nanmean(trial_wise_prediction)
+
+def evaluate_checks(data: Dict) -> Tuple[float, DataFrame]:
+    """Compare attention check responses to arranged distances
+
+    Args:
+        data (Dict): MA task data
+
+    Returns:
+        Tuple[float, DataFrame]: _description_
+    """
+    ## Did you place the top pair further apart than the bottom pair?
+    df_ma = df_from_task_data(data)
+    stim_set = set([(r.stim_id, r.stim_name) for _, r in df_ma.iterrows()])
+    stim_dict = dict(list(stim_set))
+    df_checks = df_checks_from_task_data(data)
+    triplets = 'stim2_id' in df_checks
+    stim_nrs = (1, 2, 3) if triplets else (1, 2)
+    for nr in stim_nrs:
+        names = [stim_dict[i] for i in df_checks[f'stim{nr}_id']]
+        df_checks[f'stim{nr}_name'] = names
+    df_checks = df_checks[[c for c in df_checks.columns if '_id' not in c]]
+    # loop rows
+    # loop pairs
+    # determine distance
+    return (0, df_checks)
