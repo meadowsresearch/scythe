@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Dict, Optional
 import json
 from pandas import DataFrame
+from dateutil.parser import isoparse as parse_iso_dt
 from rsatoolbox.io.meadows import extract_filename_segments
 
 
@@ -61,3 +62,20 @@ def df_from_task_data(data: dict, meta: Optional[Dict]=None) -> DataFrame:
         if key in meta:
             df[key] = meta[key]
     return df
+
+def df_checks_from_task_data(data: dict) -> DataFrame:
+    rows = []
+    for t, trial in enumerate(data['trials']):
+        for annotation in trial['annotations']:
+            row = dict(
+                trial=t,
+                stim1_id=annotation['ids'][0],
+                stim2_id=annotation['ids'][1],
+                label=annotation['label'],
+                start=parse_iso_dt(annotation['start']),
+                resp=parse_iso_dt(annotation['resp']),
+            )
+            if len(annotation['ids']) > 2:
+                row['stim3_id'] = annotation['ids'][3]
+            rows.append(row)
+    return DataFrame(rows)

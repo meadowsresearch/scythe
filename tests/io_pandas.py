@@ -1,6 +1,8 @@
 from unittest import TestCase
 import pkg_resources
 from random import randint
+from dateutil.tz import tzutc
+from datetime import datetime
 
 
 def random_row(n_rows):
@@ -106,3 +108,42 @@ class IoPandasTests(TestCase):
         self.assertEqual(trial_df['y'][0], 1.28)
         self.assertEqual(trial_df['stim_name'][0], 'stim2')
         self.assertEqual(trial_df['stim_type'][0], 'wav')
+
+    def test_load_checks_dataframe_from_data(self):
+        """Create dataframe from acceptance checks in ma data.
+        """
+        from meadows.io.pandas import df_checks_from_task_data
+        data = dict(trials=[
+            dict(annotations=[
+                dict(
+                    ids=['5c', '3b', '3b', 'f63'],
+                    start='2022-02-21T16:21:33.703Z',
+                    resp='2022-02-21T16:21:38.128Z',
+                    label='no'
+                ),
+                dict(
+                    ids=['5c', '3b', '3b', 'f63'],
+                    start='2022-02-21T16:21:33.703Z',
+                    resp='2022-02-21T16:21:38.128Z',
+                    label='no'
+                ),
+            ]),
+            dict(annotations=[
+                dict(
+                    ids=['5c', '3b', '3b', 'f63'],
+                    start='2022-02-21T16:21:33.703Z',
+                    resp='2022-02-21T16:21:38.128Z',
+                    label='no'
+                ),
+            ]),
+        ])
+        df = df_checks_from_task_data(data)
+        self.assertEqual(len(df), 3)
+        self.assertEqual(df.iloc[0].stim1_id, '5c')
+        self.assertEqual(df.iloc[0].stim2_id, '3b')
+        self.assertEqual(df.iloc[0].stim3_id, 'f63')
+        self.assertEqual(df.iloc[0].start.to_pydatetime(),
+            datetime(2022, 2, 21, 16, 21, 33, 703000, tzinfo=tzutc()))
+        self.assertEqual(df.iloc[0].resp.to_pydatetime(),
+            datetime(2022, 2, 21, 16, 21, 38, 128000, tzinfo=tzutc())) 
+        self.assertEqual(df.iloc[0].label, 'no')
