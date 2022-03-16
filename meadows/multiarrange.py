@@ -70,14 +70,24 @@ def evaluate_checks(data: Dict) -> Tuple[float, DataFrame]:
     df_ma = df_from_task_data(data)
     stim_set = set([(r.stim_id, r.stim_name) for _, r in df_ma.iterrows()])
     stim_dict = dict(list(stim_set))
-    df_checks = df_checks_from_task_data(data)
-    triplets = 'stim2_id' in df_checks
+    df = df_checks_from_task_data(data)
+    triplets = 'stim2_id' in df
     stim_nrs = (1, 2, 3) if triplets else (1, 2)
+    pairs = [(1, 2), (2, 3)] if triplets else [(1, 2)]
     for nr in stim_nrs:
-        names = [stim_dict[i] for i in df_checks[f'stim{nr}_id']]
-        df_checks[f'stim{nr}_name'] = names
-    df_checks = df_checks[[c for c in df_checks.columns if '_id' not in c]]
-    # loop rows
-    # loop pairs
-    # determine distance
-    return (0, df_checks)
+        names = [stim_dict[i] for i in df[f'stim{nr}_id']]
+        df[f'stim{nr}_name'] = names
+    for r, row in df.iterrows():
+        for p, pair in enumerate(pairs, start=1):
+            pair_pos = []
+            for pair_index in pair:
+                sid = row[f'stim{pair_index}_id']
+                pos = df_ma.loc[(df_ma.trial == row.trial) & (df_ma.stim_id == sid)]
+                pair_pos.append(numpy.array([pos.x, pos.y]))
+            df.loc[r, f'pair{p}_dist'] = numpy.linalg.norm(pair_pos[0]-pair_pos[1])
+    ## below analysis part specific for "repeat" mode with triplets
+    df['true'] = df.pair1_dist > df.pair2_dist
+    df['acc'] = df.true == (df.label == 'yes')
+    ## remove ids for readability
+    df = df[[c for c in df.columns if '_id' not in c]]
+    return (df.acc.mean(), df)

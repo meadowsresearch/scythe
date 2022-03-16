@@ -21,8 +21,8 @@ class MaChecksTests(TestCase):
         with open(fpath) as fhandle:
             data = json.load(fhandle)
         acc, df = evaluate_checks(data)
-        self.assertEqual(acc, 0.5)
-        self.assertEqual(df.iloc[0].pair1_dist, 0.5)
-        self.assertEqual(df.iloc[0].pair2_dist, 0.7)
+        self.assertEqual(acc, 1.0)
+        self.assertAlmostEqual(df.iloc[0].pair1_dist, 0.6321, 4)
+        self.assertAlmostEqual(df.iloc[0].pair2_dist, 0.8214, 4)
         self.assertEqual(df.iloc[0].label, 'no')
-        self.assertEqual(df.iloc[0].correct, True)
+        self.assertEqual(df.iloc[0].acc, True)
