@@ -18,20 +18,16 @@ class CfptScoreTests(TestCase):
         from meadows.cfpt import score_cfpt
         fdata = StringIO(DATA)
         annotations = pandas.read_csv(fdata)
-        out_scores, out_df = score_cfpt(annotations)
+        out_df = score_cfpt(annotations)
         self.assertEqual(len(out_df), 32)
         # first participant, first trial
         wittyWorm_1 = out_df.iloc[0]
-        self.assertEqual(wittyWorm_1.rt, 60.33)
-        self.assertEqual(wittyWorm_1.n_moves, 11)
+        self.assertEqual(wittyWorm_1.participation, 'witty-worm')
         self.assertEqual(wittyWorm_1.identity, 52)
         self.assertEqual(wittyWorm_1.condition, 'inv')
+        self.assertEqual(wittyWorm_1.n_moves, 11)
+        self.assertEqual(wittyWorm_1.rt, 60.033)
         self.assertEqual(wittyWorm_1.score, 6)
-        # totals
-        self.assertEqual(out_scores, {
-            'witty-worm': 99,
-            'modern-goblin': 99
-        })
 
 
 DATA = """
