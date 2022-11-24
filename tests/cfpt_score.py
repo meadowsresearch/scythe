@@ -3,8 +3,6 @@
 #pylint: disable=import-outside-toplevel
 from unittest import TestCase
 from io import StringIO
-import numpy
-from numpy.testing import assert_array_equal
 import pandas
 
 
@@ -14,21 +12,26 @@ class CfptScoreTests(TestCase):
     N_TRIALS = 16
 
     def test_score(self):
-        """score_cfmt() adds the trial-wise "score" column
+        """score_cfpt() adds the trial-wise "score" column
         and a total score
         """
         from meadows.cfpt import score_cfpt
         fdata = StringIO(DATA)
         annotations = pandas.read_csv(fdata)
         out_scores, out_df = score_cfpt(annotations)
-        # first participant first 5 trials: number of moves
-        assert_array_equal(out_df.n_moves.values[:5], numpy.array([
-            11, 29, 23, 21, 10
-        ]))
-        # second participant first 5 trials: number of moves
-        assert_array_equal(out_df.n_moves.values[:N_TRIALS+5], numpy.array([
-            10, 15, 26, 21, 32
-        ]))
+        self.assertEqual(len(out_df), 32)
+        # first participant, first trial
+        wittyWorm_1 = out_df.iloc[0]
+        self.assertEqual(wittyWorm_1.rt, 60.33)
+        self.assertEqual(wittyWorm_1.n_moves, 11)
+        self.assertEqual(wittyWorm_1.identity, 52)
+        self.assertEqual(wittyWorm_1.condition, 'inv')
+        self.assertEqual(wittyWorm_1.score, 6)
+        # totals
+        self.assertEqual(out_scores, {
+            'witty-worm': 99,
+            'modern-goblin': 99
+        })
 
 
 DATA = """
