@@ -9,7 +9,7 @@ def score_cfpt(annotations: DataFrame) -> DataFrame:
 
     To get a dictionary of total scores by participant:
     ```
-        df.groupby('participation').sum().score.to_dict()
+        df.groupby('participation').mean().score.to_dict()
     ```
 
     Args:
@@ -20,6 +20,7 @@ def score_cfpt(annotations: DataFrame) -> DataFrame:
             dictionary of total scores,
             second a copy of the dataframe with a new "score" column
     """
+    MAX_DEVIATION = 18
     rows = []
     for _, trial in annotations.iterrows():
         start_dt = parse_iso_dt(trial.start)
@@ -29,14 +30,15 @@ def score_cfpt(annotations: DataFrame) -> DataFrame:
         parts = dict()
         for p, part in enumerate(['cond', 'id', 'mix']):
             parts[part] = [s.split('_')[p] for s in stims_str.split('-')]
-        score = numpy.abs(numpy.argsort(parts['mix']) - numpy.arange(6)).sum()
+        deviations = numpy.abs(numpy.argsort(parts['mix']) - numpy.arange(6)).sum()
         rows.append(dict(
             participation=trial.participation,
             identity=int(parts['id'][0]),
             condition=parts['cond'][0],
             n_moves=n_moves,
             rt=(resp_dt-start_dt).total_seconds(),
-            score=score
+            deviations=deviations,
+            score=100*(1-(deviations/MAX_DEVIATION))
         ))
     return DataFrame(rows)
     

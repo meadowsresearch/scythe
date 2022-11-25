@@ -27,7 +27,8 @@ class CfptScoreTests(TestCase):
         self.assertEqual(wittyWorm_1.condition, 'inv')
         self.assertEqual(wittyWorm_1.n_moves, 11)
         self.assertEqual(wittyWorm_1.rt, 60.033)
-        self.assertEqual(wittyWorm_1.score, 6)
+        self.assertEqual(wittyWorm_1.deviations, 6)
+        self.assertAlmostEqual(wittyWorm_1.score, 66.67, places=2)
 
 
 DATA = """
