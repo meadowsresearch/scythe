@@ -58,10 +58,13 @@ class CfmtScoreTests(TestCase):
             ['plus_00_N', 3], # 
             ['plus_17_M', 2], # wrong
             ['plus_21_N', 1], # 
+            ['plus_05_D', 2], # wrong	
+            ['plus_06_B', 1], #
+            ['plus_07_D', 1], # wrong	
         ], columns=['stim1_name', 'label'])
         out_score, out_df = score_cfmt(annotations)
         assert_array_equal(out_df.correct.values, numpy.array([
-            False, True, False, True,
-            False, True, True, False, True
+            False, True, False, True, False, True,
+            True, False, True, False, True, False
         ]))
-        self.assertEqual(out_score, 5)
+        self.assertEqual(out_score, 6)
