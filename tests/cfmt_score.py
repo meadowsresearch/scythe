@@ -41,3 +41,30 @@ class CfmtScoreTests(TestCase):
             True, False, True, True, True, True,
             False, False, True, True, True, True, False, True, False
         ]))
+
+    def test_plus_score(self):
+        """score_cfmt() adds the "correct" boolean column and a total score
+        """
+        from meadows.cfmt import score_cfmt
+        annotations = pandas.DataFrame([
+            ['pract_00_X_01_13_l_li', 1],
+            ['pract_00_X_03_13_r_li', 3], # wrong
+            ['intro_00_B_02_00_f_li', 1], # wrong
+            ['intro_05_Z_02_00_f_li', 3],
+            ['novel_00_M_05_00_f_hl', 3], # wrong
+            ['novel_01_N_08_13_r_dk', 2],
+            ['noise_01_M_11_23_r_li', 2], # wrong
+            ['noise_22_B_11_23_r_li', 1],
+            ['plus_00_N', 3], # 
+            ['plus_17_M', 2], # wrong
+            ['plus_21_N', 1], # 
+            ['plus_05_D', 2], # wrong	
+            ['plus_06_B', 1], #
+            ['plus_07_D', 1], # wrong	
+        ], columns=['stim1_name', 'label'])
+        out_score, out_df = score_cfmt(annotations)
+        assert_array_equal(out_df.correct.values, numpy.array([
+            False, True, False, True, False, True,
+            True, False, True, False, True, False
+        ]))
+        self.assertEqual(out_score, 6)
