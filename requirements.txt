@@ -1,5 +1,6 @@
 numpy
 pandas
+seaborn
 randomgen==1.19.3
 rsatoolbox>=0.0.4
 imageio>=2.14.1
