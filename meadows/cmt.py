@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Tuple, Union, Literal
-from meadows.keys import CFMT_KEY
+from meadows.keys import CFMT_KEY, BODIES_KEY, CARS_KEY, BIKES_KEY
 if TYPE_CHECKING:
     from pandas.core.frame import DataFrame
 CmtSubtype = Union[
@@ -10,6 +10,7 @@ CmtSubtype = Union[
     Literal['bikes'],
     Literal['cars']
 ]
+KEYS = {'faces': CFMT_KEY, 'bodies': BODIES_KEY, 'cars': CARS_KEY, 'bikes': BIKES_KEY}
 
 
 def score_cfmt(annotations: DataFrame) -> Tuple[int, DataFrame]:
