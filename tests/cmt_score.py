@@ -1,4 +1,4 @@
-"""Unit tests for 
+"""Unit tests for the Cambridge Memory Test analysis
 """
 #pylint: disable=import-outside-toplevel
 from unittest import TestCase
@@ -14,7 +14,7 @@ class CfmtScoreTests(TestCase):
     def test_score(self):
         """score_cfmt() adds the "correct" boolean column and a total score
         """
-        from meadows.cfmt import score_cfmt
+        from meadows.cmt import score_cfmt
         annotations = pandas.DataFrame([
             ['pract_00_X_01_13_l_li', 1],
             ['pract_00_X_02_00_f_li', 2],
@@ -45,7 +45,7 @@ class CfmtScoreTests(TestCase):
     def test_plus_score(self):
         """score_cfmt() adds the "correct" boolean column and a total score
         """
-        from meadows.cfmt import score_cfmt
+        from meadows.cmt import score_cfmt
         annotations = pandas.DataFrame([
             ['pract_00_X_01_13_l_li', 1],
             ['pract_00_X_03_13_r_li', 3], # wrong
