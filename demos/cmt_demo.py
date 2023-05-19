@@ -4,10 +4,14 @@ faces.
 """
 
 import pandas
-from meadows.cmt import score_cfmt
+from meadows.cmt import score_cmt
 
 annotations = pandas.read_csv('/path/to/my/file')
-out_score, out_df = score_cfmt(annotations)
+## faces, bikes, bodies, cars
+out_score, out_df = score_cmt(annotations, 'faces')
+
+## total score:
+print(f'score: {out_score}')
 
 # first participant, first trial:
 out_df.iloc[0].score

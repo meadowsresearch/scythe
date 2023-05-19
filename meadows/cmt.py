@@ -37,7 +37,8 @@ def score_cmt(annotations: DataFrame, subtype: CmtSubtype) -> Tuple[int, DataFra
     """
     scored = annotations.copy()
     scored = scored.loc[~scored.stim1_name.str.contains('pract')]
+    key = KEYS[subtype]
     def isCorrect(row):
-        return CFMT_KEY[row.stim1_name] == int(row.label)
+        return key[row.stim1_name] == int(row.label)
     scored['correct'] = scored.apply(isCorrect, axis=1)
     return (scored.correct.values.sum(), scored)
