@@ -1,28 +1,4 @@
-from __future__ import annotations
-from typing import TYPE_CHECKING, Tuple
-if TYPE_CHECKING:
-    from pandas.core.frame import DataFrame
-
-
-def score_cfmt(annotations: DataFrame) -> Tuple[int, DataFrame]:
-    """Determine total score and mark correct responses
-
-    Args:
-        annotations (DataFrame): Annotations
-
-    Returns:
-        Tuple[int, DataFrame]: First element is the total score,
-            second a copy of the dataframe with a new "correct" column
-    """
-    scored = annotations.copy()
-    scored = scored.loc[~scored.stim1_name.str.contains('pract')]
-    def isCorrect(row):
-        return KEY[row.stim1_name] == int(row.label)
-    scored['correct'] = scored.apply(isCorrect, axis=1)
-    return (scored.correct.values.sum(), scored)
-
-
-KEY = dict(
+CFMT_KEY = dict(
     pract_00_X_01_13_l_li=1,
     pract_00_X_02_00_f_li=2,
     pract_00_X_03_13_r_li=2,
